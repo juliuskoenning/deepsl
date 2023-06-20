@@ -1,0 +1,57 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+}
+
+header img {
+    margin-right: 20px;
+    width: 80px;
+    height: 80px;
+}
+
+#video-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    margin: 10px;
+    background-color: #ddd;
+}
+
+#webcam-placeholder, #subtitles {
+    padding: 20px;
+    border: 1px solid #888;
+    background-color: #fff;
+    width: 45%;
+    height: 400px;  /* Add desired height here */
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+}
+
+button {
+    padding: 10px;
+    border: none;
+    background-color: #888;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #666;
+}
