@@ -55,3 +55,23 @@ button {
 button:hover {
     background-color: #666;
 }
+
+#subtitle-text {
+    font-size: 22px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 3px;
+    margin: 10px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    opacity: 0; /* start as transparent */
+    transition: opacity 1s; /* transition duration */
+}
+
+#subtitle-text {
+    opacity: 1;
+}
