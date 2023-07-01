@@ -17,48 +17,21 @@ function handleVideoUpload(event) {
         video.src = videoUrl;
         video.load();
         video.play();
-
-        // Show the video player and hide the upload label
         video.style.display = "block";
         document.getElementById('upload-label').style.display = 'none';
 
-            // Display the first subtitle
-            setTimeout(function() {
-                subtitleText.textContent = data.subtitles[0];
-                subtitleText.style.opacity = "1";
-            }, 3000);
+        setTimeout(function() {
+            subtitleText.textContent = data.subtitle;
+            subtitleText.style.opacity = "1";
+        }, 0);
 
-            // Reset opacity to 0 before changing to the second subtitle
-            setTimeout(function() {
-                subtitleText.style.opacity = "0";
-            }, 4000); 
-
-            // Display the second subtitle
-            setTimeout(function() {
-                subtitleText.textContent = data.subtitles[1];
-                subtitleText.style.opacity = "1";
-            }, 6500);
-
-            // Reset opacity to 0 before changing to the third subtitle
-            setTimeout(function() {
-                subtitleText.style.opacity = "0";
-            }, 7500); 
-
-            // Display the third subtitle
-            setTimeout(function() {
-                subtitleText.textContent = data.subtitles[2];
-                subtitleText.style.opacity = "1";
-            }, 9750);
-
-                        // Reset opacity to 0 before changing to the third subtitle
-            setTimeout(function() {
+        setTimeout(function() {
             subtitleText.style.opacity = "0";
-            }, 10750); 
+        }, 1000); 
 
-            // Hide the upload input after the video has loaded
-            video.oncanplay = function() {
-                document.getElementById('upload-label').style.display = 'none';
-            };
-        })
-        .catch(error => console.error(error));
-    }
+        video.oncanplay = function() {
+            document.getElementById('upload-label').style.display = 'none';
+        };
+    })
+    .catch(error => console.error(error));
+}

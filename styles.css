@@ -30,7 +30,7 @@ header img {
     border: 1px solid #888;
     background-color: #fff;
     width: 45%;
-    height: 400px;  /* Add desired height here */
+    height: 400px; 
     text-align: center;
     display: flex;
     align-items: center;
@@ -68,8 +68,8 @@ button:hover {
     max-width: 800px;
     margin-left: auto;
     margin-right: auto;
-    opacity: 0; /* start as transparent */
-    transition: opacity 1s; /* transition duration */
+    opacity: 0; 
+    transition: opacity 1s;
 }
 
 #subtitle-text {

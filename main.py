@@ -19,5 +19,8 @@ app.add_middleware(
 )
 
 @app.post("/api/videos")
-async def upload_video():
-    return {"subtitles": ["Africa", "Basketball", "Sleep"]}
+async def upload_video(video: UploadFile = File(...)):
+    # video_data ist das Video mit dem das Modell ab hier arbeitet
+    video_data = await video.read()
+
+    return {"subtitle": "Placeholder"}
