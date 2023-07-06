@@ -1,5 +1,9 @@
 from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
+import json
+from utils.detect_sign import predict_one_path, setup_prediction_model
+
+setup_prediction_model()
 
 app = FastAPI()
 
@@ -23,4 +27,6 @@ async def upload_video(video: UploadFile = File(...)):
     # video_data ist das Video mit dem das Modell ab hier arbeitet
     video_data = await video.read()
 
-    return {"subtitle": "Placeholder"}
+    results = predict_one_path(video)
+
+    return {"subtitle": results}
