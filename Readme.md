@@ -16,4 +16,4 @@ install the required librarys:
 
 `pip install -q git+https://github.com/tensorflow/docs`
 
-`install pyyaml h5py`
+`pip install pyyaml h5py`
