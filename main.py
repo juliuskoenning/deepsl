@@ -1,11 +1,16 @@
 from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
-import json
+import uvicorn
+import tempfile
 from utils.detect_sign import predict_one_path, setup_prediction_model
-
-setup_prediction_model()
+import cv2
+import os
 
 app = FastAPI()
+
+UPLOAD_DIR = "path/to/upload/directory"
+
+setup_prediction_model()
 
 origins = [
     "http://localhost",
@@ -22,11 +27,32 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# @app.post("/api/videos")
+# async def upload_video(video: UploadFile = File(...)):
+#     # video_data ist das Video mit dem das Modell ab hier arbeitet
+#     video_data = await video.read()
+#
+#     results = predict_one_path(video_data)
+#
+#     return {"subtitle": results}
+
 @app.post("/api/videos")
 async def upload_video(video: UploadFile = File(...)):
-    # video_data ist das Video mit dem das Modell ab hier arbeitet
-    video_data = await video.read()
 
-    results = predict_one_path(video)
+    # Create the upload directory if it doesn't exist
+    os.makedirs(UPLOAD_DIR, exist_ok=True)
+
+    # Generate a unique filename for the uploaded video
+    filename = f"video_{video.filename}"
+    file_path = os.path.join(UPLOAD_DIR, filename)
+
+    # Save the uploaded video to the server
+    with open(file_path, "wb") as f:
+        f.write(await video.read())
+
+    results = predict_one_path(file_path)
 
     return {"subtitle": results}
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)

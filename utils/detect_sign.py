@@ -710,7 +710,7 @@ def predict_detection_of_video(video_file_path):
 
 
 def load_recognition_model(
-    test_ds, model_path: str = "./checkpoints_EfficientNetB0_15epochs/checkpoint"
+    test_ds, model_path: str = "./utils/checkpoints_EfficientNetB0_15epochs/checkpoint"
 ):
     model = create_efficient_net_model(base_model_trainable = True, rescaling = True)
 
@@ -824,7 +824,7 @@ def setup_prediction_model():
     global mp_face_mesh
     print("start loading the model")
     """## 1.2 Setup Test Dir"""
-    video_path_for_generator = "../data/test/"
+    video_path_for_generator = "./data/test/"
     video_path_for_generator = pathlib.Path(video_path_for_generator)
     train_ds = create_training_set(video_path_for_generator)
     mp_face_mesh = mp.solutions.face_mesh
