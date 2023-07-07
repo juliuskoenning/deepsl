@@ -31,15 +31,27 @@ import mediapipe as mp
 from tensorflow_docs.vis import embed
 import imageio
 import tensorflow as tf
-from tensorflow.keras.layers import Dense, Flatten, Conv2D, MaxPooling2D, GlobalAveragePooling2D, Dropout, \
-ZeroPadding3D, ZeroPadding2D, RandomRotation, RandomCrop,RandomFlip, RandomZoom, BatchNormalization
+from tensorflow.keras.layers import (
+    Dense,
+    Flatten,
+    Conv2D,
+    MaxPooling2D,
+    GlobalAveragePooling2D,
+    Dropout,
+    ZeroPadding3D,
+    ZeroPadding2D,
+    RandomRotation,
+    RandomCrop,
+    RandomFlip,
+    RandomZoom,
+    BatchNormalization,
+)
 import numpy as np
 import cv2
 import pathlib
 import random
 from typing import Tuple
 import os
-
 
 
 """## 1.4 preprocess video"""
@@ -180,7 +192,10 @@ def preprocess_3d_data(data):
     # Randomly crop the video.
     crop_size = (10, 224, 224, 3)
     data_shape = tf.shape(data)
-    data = tf.image.random_crop(data, size=(data_shape[0], crop_size[0], crop_size[1], crop_size[2], crop_size[3]))
+    data = tf.image.random_crop(
+        data,
+        size=(data_shape[0], crop_size[0], crop_size[1], crop_size[2], crop_size[3]),
+    )
 
     # Randomly flip the video horizontally.
     data = tf.map_fn(lambda x: tf.image.random_flip_left_right(x), data)
@@ -198,21 +213,23 @@ class DataAugmentationLayer(tf.keras.layers.Layer):
         return preprocess_3d_data(inputs)
 
 
-def create_preprocessing_layer(input_shape: Tuple = (10, 224, 224, 3), rescaling = True):
+def create_preprocessing_layer(input_shape: Tuple = (10, 224, 224, 3), rescaling=True):
     video_input = tf.keras.Input(shape=input_shape)
-    x = ZeroPadding3D(padding=((0, 0),(4,4),(4,4)))(video_input)
+    x = ZeroPadding3D(padding=((0, 0), (4, 4), (4, 4)))(video_input)
     x = DataAugmentationLayer()(x)
     if rescaling:
         x = tf.keras.layers.Rescaling(scale=255)(x)
     return video_input, x
 
-def create_efficient_net_model(base_model_trainable: bool = True, rescaling: bool = True):
 
-    net = tf.keras.applications.EfficientNetB0(include_top = False)
+def create_efficient_net_model(
+    base_model_trainable: bool = True, rescaling: bool = True
+):
+    net = tf.keras.applications.EfficientNetB0(include_top=False)
     net.trainable = base_model_trainable
     # Example usage:
     input_shape = (10, 224, 224, 3)
-    video_input, x = create_preprocessing_layer(input_shape, rescaling = rescaling)
+    video_input, x = create_preprocessing_layer(input_shape, rescaling=rescaling)
 
     x = tf.keras.layers.TimeDistributed(net)(x)
     x = tf.keras.layers.Dense(100)(x)
@@ -670,7 +687,9 @@ def predict_detection_of_video(video_file_path):
     if start_time_temp is not None:
         if (frame_counter - start_time_temp) > fps:
             video_times.append((start_time_temp, frame_counter))
-            min_x, max_x, min_y, max_y = crop_videos_from_dataframe(video_positions, cap)
+            min_x, max_x, min_y, max_y = crop_videos_from_dataframe(
+                video_positions, cap
+            )
             video_positions = create_empty_dataframe()
             crop_video.append(
                 cut_videos(
@@ -688,16 +707,92 @@ def predict_detection_of_video(video_file_path):
     # When everything done, release the video capture object
     cap.release()
 
+    # for item in crop_video:
+    #     for key, value in item.items():
+    #         clip = VideoFileClip(key)
+    #         clip.reader.close()
+    #         clip.audio.reader.close_proc()
+    #         new_clip = crop(clip, x1=value[0], y1=value[1], x2=value[2], y2=value[3])
+    #         cropped_video_dir = os.path.join(os.path.dirname(key), "cropped\\")
+    #         if not os.path.exists(cropped_video_dir):
+    #             os.mkdir(cropped_video_dir)
+    #         target_path_cropped = cropped_video_dir + key.split("\\")[-1]
+    #         target_path_cropped = target_path_cropped.replace(
+    #             ".mp4", f"_cropped_{value[0]}_{value[1]}_{value[2]}_{value[3]}.mp4"
+    #         )
+    #         # + "cropped." + key.split(".")[1]
+    #         try:
+    #             new_clip.write_videofile(target_path_cropped, audio=False)
+    #         # new_clip.write_videofile(key, audio=False)
+
+    #         # clip.release()
+    #         except Exception as e:
+    #             print(e)
+    #             new_clip.write_videofile("./test", audio=False)
+    #         clip.release()
     for item in crop_video:
         for key, value in item.items():
-            clip = VideoFileClip(key)
-            new_clip = crop(clip, x1=value[0], y1=value[1], x2=value[2], y2=value[3])
-            cropped_video_dir = os.path.dirname(key) + "\\cropped\\"
+            # Open the video file
+            video = cv2.VideoCapture(key)
+
+            x1 = value[0]
+            y1 = value[1]
+            x2 = value[2]
+            y2 = value[3]
+
+            # Get the video's frame rate and dimensions
+            fps = video.get(cv2.CAP_PROP_FPS)
+            width = int(video.get(cv2.CAP_PROP_FRAME_WIDTH))
+            height = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
+            cropped_video_dir = os.path.join(os.path.dirname(key), "cropped\\")
             if not os.path.exists(cropped_video_dir):
                 os.mkdir(cropped_video_dir)
             target_path_cropped = cropped_video_dir + key.split("\\")[-1]
-                                  # + "cropped." + key.split(".")[1]
-            print(new_clip.write_videofile(target_path_cropped, audio=False))
+
+            # Create a VideoWriter object to write the cropped video
+            writer = cv2.VideoWriter(
+                target_path_cropped,
+                cv2.VideoWriter_fourcc(*"mp4v"),
+                fps,
+                (x2 - x1, y2 - y1),
+            )
+
+            while True:
+                # Read a frame from the video
+                ret, frame = video.read()
+
+                if not ret:
+                    break
+
+                # Crop the frame
+                cropped_frame = frame[y1:y2, x1:x2]
+
+                # Write the cropped frame to the video file
+                writer.write(cropped_frame)
+
+            # # Release the resources
+            # video.release()
+            # writer.release()
+
+            # new_clip = crop(clip, x1=value[0], y1=value[1], x2=value[2], y2=value[3])
+            # cropped_video_dir = os.path.join(os.path.dirname(key), "cropped\\")
+            # if not os.path.exists(cropped_video_dir):
+            #     os.mkdir(cropped_video_dir)
+            # target_path_cropped = cropped_video_dir + key.split("\\")[-1]
+            # target_path_cropped = target_path_cropped.replace(
+            #     ".mp4", f"_cropped_{value[0]}_{value[1]}_{value[2]}_{value[3]}.mp4"
+            # )
+            # # + "cropped." + key.split(".")[1]
+            # try:
+            #     new_clip.write_videofile(target_path_cropped, audio=False)
+            # # new_clip.write_videofile(key, audio=False)
+
+            # # clip.release()
+            # except Exception as e:
+            #     print(e)
+            #     new_clip.write_videofile("./test", audio=False)
+            # clip.release()
 
     return crop_video, video_times, fps, os.path.dirname(key)
 
@@ -712,7 +807,7 @@ def predict_detection_of_video(video_file_path):
 def load_recognition_model(
     test_ds, model_path: str = "./utils/checkpoints_EfficientNetB0_15epochs/checkpoint"
 ):
-    model = create_efficient_net_model(base_model_trainable = True, rescaling = True)
+    model = create_efficient_net_model(base_model_trainable=True, rescaling=True)
 
     model.compile(
         optimizer="adam",
@@ -732,6 +827,7 @@ def to_gif(images):
     converted_images = np.clip(images * 255, 0, 255).astype(np.uint8)
     imageio.mimsave("./animation.gif", converted_images, fps=10)
     return embed.embed_file("./animation.gif")
+
 
 #
 # def recognize_video_folder(video_file_path, model):
@@ -764,8 +860,8 @@ def to_gif(images):
 #
 #     return labels
 
-def recognize_video_folder(video_file_path, model):
 
+def recognize_video_folder(video_file_path, model):
     chosen_fg = FrameGenerator(pathlib.Path(video_file_path), 10, training=False)
 
     labels: list = []
@@ -789,6 +885,7 @@ def recognize_video_folder(video_file_path, model):
 
         print(f"True label: {true_label} ({true_class_name})")
         print(f"Predicted label: {predicted_label[0]} ({predicted_class_name})")
+    print(labels)
 
     return labels
 
@@ -800,23 +897,36 @@ def predict_video_input(video_path, recognition_model):
     # folder = os.path.dirname(str(path_first_video))
     labels = recognize_video_folder(video_dir, recognition_model)
     predictions = []
-    for counter, label in enumerate(labels):
+    # for counter, label in enumerate(labels):
+    #     predictions.append(
+    #         {
+    #             "label": label,
+    #             "video_times": video_times[counter],
+    #             "start_time": video_times[counter][0] / fps,
+    #             "end_time": video_times[counter][1] / fps,
+    #         }
+    #     )
+
+    for counter, time_temp in enumerate(video_times):
+        label = labels[counter] if len(labels) >= counter else "NaN"
         predictions.append(
             {
                 "label": label,
-                "video_times": video_times[counter],
-                "start_time": video_times[counter][0] / fps,
-                "end_time": video_times[counter][1] / fps
+                "video_times": time_temp,
+                "start_time": time_temp[0] / fps,
+                "end_time": time_temp[1] / fps,
             }
         )
 
-    shutil.rmtree(video_dir+"\\cropped\\")
-
+    shutil.rmtree(video_dir + "\\cropped\\")
+    print(predictions)
     return predictions
+
 
 recognition_model = None
 CLASS_NAMES = []
 mp_face_mesh = None
+
 
 def setup_prediction_model():
     global recognition_model
@@ -832,13 +942,13 @@ def setup_prediction_model():
     recognition_model = load_recognition_model(train_ds)
     print("model loaded successfully")
 
+
 def predict_one_path(video_path):
     global recognition_model
     return predict_video_input(video_path, recognition_model)
 
 
 if __name__ == "__main__":
-
     setup_prediction_model()
     #
     # path_temp = r"C:\Users\Phili\Desktop\Uni Projekte\SignLanguageDetection\App\Demo\philipp_demo3cropped.mp4"
@@ -866,9 +976,9 @@ if __name__ == "__main__":
 
     # video_file_path = r"C:\Users\Phili\Desktop\Uni Projekte\SignLanguageDetection\App\Demo"
 
-    demo_test_path = r"C:\Users\Phili\Desktop\Uni Projekte\SignLanguageDetection\App\Demo\philipp_demo.mp4"
+    demo_test_path = (
+        r"C:\Users\Phili\Desktop\Uni_Projekte\SignLanguageDetection\App\Demo\01387.mp4"
+    )
     print(predict_one_path(demo_test_path))
 
-
     # print(predict_video_input(demo_test_path, recognition_model))
-

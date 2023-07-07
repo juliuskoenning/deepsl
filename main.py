@@ -3,12 +3,12 @@ from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 import tempfile
 from utils.detect_sign import predict_one_path, setup_prediction_model
-import cv2
+import json
 import os
 
 app = FastAPI()
 
-UPLOAD_DIR = "path/to/upload/directory"
+UPLOAD_DIR = "/upload_directory"
 
 setup_prediction_model()
 
@@ -16,7 +16,7 @@ origins = [
     "http://localhost",
     "http://localhost:5500",
     "http://127.0.0.1",
-    "http://127.0.0.1:5500"
+    "http://127.0.0.1:5500",
 ]
 
 app.add_middleware(
@@ -36,9 +36,9 @@ app.add_middleware(
 #
 #     return {"subtitle": results}
 
+
 @app.post("/api/videos")
 async def upload_video(video: UploadFile = File(...)):
-
     # Create the upload directory if it doesn't exist
     os.makedirs(UPLOAD_DIR, exist_ok=True)
 
@@ -52,7 +52,8 @@ async def upload_video(video: UploadFile = File(...)):
 
     results = predict_one_path(file_path)
 
-    return {"subtitle": results}
+    return {"subtitle": json.dumps(results)}
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
