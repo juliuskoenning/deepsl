@@ -1,77 +1,123 @@
 body {
-    font-family: Arial, sans-serif;
+  font-family: Arial, sans-serif;
 }
 
 header {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    background-color: #333;
-    color: white;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: #333;
+  color: white;
 }
 
 header img {
-    margin-right: 10px;
-    width: 100px;
-    height: 100px;
+  margin-right: 10px;
+  width: 100px;
+  height: 100px;
 }
 
 #video-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    margin: 10px;
-    background-color: #ddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  margin: 10px;
+  background-color: #ddd;
 }
 
-#webcam-placeholder, #subtitles {
-    padding: 20px;
-    border: 1px solid #888;
-    background-color: #fff;
-    width: 45%;
-    height: 400px; 
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+#webcam-placeholder,
+#subtitles {
+  padding: 20px;
+  border: 1px solid #888;
+  background-color: #fff;
+  width: 45%;
+  height: 400px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#webcam-placeholder {
+  padding: 20px;
+  border: 1px solid #888;
+  background-color: #eee;
+  width: 45%;
+  height: 400px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+#subtitles {
+  padding: 20px;
+  border: 1px solid #888;
+  background-color: #fff;
+  width: 45%;
+  height: 400px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #controls {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    padding: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
 }
 
 button {
-    padding: 10px;
-    border: none;
-    background-color: #888;
-    color: white;
-    cursor: pointer;
+  padding: 10px;
+  border: none;
+  background-color: #888;
+  color: white;
+  cursor: pointer;
 }
 
 button:hover {
-    background-color: #666;
+  background-color: #666;
 }
 
 #subtitle-text {
-    font-size: 22px;
-    font-weight: bold;
-    color: #333;
-    text-align: center;
-    background-color: #fff;
-    padding: 10px;
-    border-radius: 3px;
-    margin: 10px;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-    opacity: 0; 
-    transition: opacity 1s;
+  font-size: 22px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 3px;
+  margin: 10px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  opacity: 0;
+  transition: opacity 1s;
 }
 
 #subtitle-text {
-    opacity: 1;
+  opacity: 1;
+}
+
+.loader {
+  border: 16px solid #f3f3f3;
+  border-top: 16px solid #3498db;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

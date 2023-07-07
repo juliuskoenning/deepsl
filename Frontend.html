@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <link rel="stylesheet" type="text/css" href="styles.css">
-        <script src="reset_button.js"></script>
-        <script src="video.js"></script>
-    </head>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <script src="reset_button.js"></script>
+    <script src="video.js"></script>
+</head>
+
 <body>
     <header>
         <img id="logo" src="logo-placeholder.png" alt="DeepSL Logo">
@@ -15,10 +17,13 @@
         <div id="video-container">
             <div id="webcam-placeholder">
                 <input type="file" id="video-upload" style="display: none" onchange="handleVideoUpload(event)">
-                <label for="video-upload" id="upload-label" style="display: block; width: 100%; height: 100%; border: 2px dashed #ccc; text-align: center; line-height: 400px; background: #eee;">Click here to upload a video</label>
+                <label for="video-upload" id="upload-label"
+                    style="display: block; width: 100%; height: 100%; border: 2px dashed #ccc; text-align: center; line-height: 400px;">Click
+                    here to upload a video</label>
                 <video width="100%" height="100%" controls style="display: none">
-                  Your browser does not support this video.
+                    Your browser does not support this video.
                 </video>
+                <div id="loader" class="loader" style="display: none;"></div>
             </div>
             <div id="subtitles">
                 <p id="subtitle-text">Translation Subtitles Will Appear Here</p>
@@ -30,4 +35,3 @@
         </div>
     </main>
 </body>
-</html>
