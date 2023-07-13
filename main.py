@@ -1,10 +1,12 @@
-from fastapi import FastAPI, UploadFile, File
-from fastapi.middleware.cors import CORSMiddleware
-import uvicorn
-import tempfile
-from utils.detect_sign import predict_one_path, setup_prediction_model
 import json
 import os
+import tempfile
+
+import uvicorn
+from fastapi import FastAPI, File, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
+
+from utils.detect_sign import predict_one_path, setup_prediction_model
 
 app = FastAPI()
 
@@ -52,7 +54,7 @@ async def upload_video(video: UploadFile = File(...)):
 
     results = predict_one_path(file_path)
 
-    return {"subtitle": json.dumps(results)}
+    return {"subtitle": results}
 
 
 if __name__ == "__main__":

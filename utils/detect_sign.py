@@ -21,38 +21,27 @@ how to execute this notebook:
 ## 1.1 Imports
 """
 
-# The way this tutorial uses the `TimeDistributed` layer requires TF>=2.10
-import shutil
-
-from moviepy.video.fx.all import crop
-from moviepy.editor import VideoFileClip
-import pandas as pd
-import mediapipe as mp
-from tensorflow_docs.vis import embed
-import imageio
-import tensorflow as tf
-from tensorflow.keras.layers import (
-    Dense,
-    Flatten,
-    Conv2D,
-    MaxPooling2D,
-    GlobalAveragePooling2D,
-    Dropout,
-    ZeroPadding3D,
-    ZeroPadding2D,
-    RandomRotation,
-    RandomCrop,
-    RandomFlip,
-    RandomZoom,
-    BatchNormalization,
-)
-import numpy as np
-import cv2
+import os
 import pathlib
 import random
+# The way this tutorial uses the `TimeDistributed` layer requires TF>=2.10
+import shutil
 from typing import Tuple
-import os
 
+import cv2
+import imageio
+import mediapipe as mp
+import numpy as np
+import pandas as pd
+import tensorflow as tf
+from moviepy.editor import VideoFileClip
+from moviepy.video.fx.all import crop
+from tensorflow.keras.layers import (BatchNormalization, Conv2D, Dense,
+                                     Dropout, Flatten, GlobalAveragePooling2D,
+                                     MaxPooling2D, RandomCrop, RandomFlip,
+                                     RandomRotation, RandomZoom, ZeroPadding2D,
+                                     ZeroPadding3D)
+from tensorflow_docs.vis import embed
 
 """## 1.4 preprocess video"""
 
@@ -805,7 +794,7 @@ def predict_detection_of_video(video_file_path):
 
 
 def load_recognition_model(
-    test_ds, model_path: str = "./utils/checkpoints_EfficientNetB0_15epochs/checkpoint"
+    test_ds, model_path: str = "./utils/training_checkpoints_efficientNet/cp-0021.ckpt"
 ):
     model = create_efficient_net_model(base_model_trainable=True, rescaling=True)
 
