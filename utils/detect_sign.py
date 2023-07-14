@@ -233,108 +233,107 @@ def create_efficient_net_model(
 
 
 def create_class_names():
-    return [
-        "accident",
-        "africa",
-        "all",
-        "apple",
-        "basketball",
-        "bed",
-        "before",
-        "bird",
-        "birthday",
-        "black",
-        "blue",
-        "book",
-        "bowling",
-        "brown",
-        "but",
-        "can",
-        "candy",
-        "chair",
-        "change",
-        "cheat",
-        "city",
-        "clothes",
-        "color",
-        "computer",
-        "cook",
-        "cool",
-        "corn",
-        "cousin",
-        "cow",
-        "dance",
-        "dark",
-        "deaf",
-        "decide",
-        "doctor",
-        "dog",
-        "drink",
-        "eat",
-        "enjoy",
-        "family",
-        "fine",
-        "finish",
-        "fish",
-        "forget",
-        "full",
-        "give",
-        "go",
-        "graduate",
-        "hat",
-        "hearing",
-        "help",
-        "hot",
-        "how",
-        "jacket",
-        "kiss",
-        "language",
-        "last",
-        "later",
-        "letter",
-        "like",
-        "man",
-        "many",
-        "medicine",
-        "meet",
-        "mother",
-        "need",
-        "no",
-        "now",
-        "orange",
-        "paint",
-        "paper",
-        "pink",
-        "pizza",
-        "play",
-        "pull",
-        "purple",
-        "right",
-        "same",
-        "school",
-        "secretary",
-        "shirt",
-        "short",
-        "son",
-        "study",
-        "table",
-        "tall",
-        "tell",
-        "thanksgiving",
-        "thin",
-        "thursday",
-        "time",
-        "walk",
-        "want",
-        "what",
-        "white",
-        "who",
-        "woman",
-        "work",
-        "wrong",
-        "year",
-        "yes",
-    ]
+    return ['now',
+'computer',
+'doctor',
+'walk',
+'nothing',
+'forget',
+'no',
+'chicken',
+'please',
+'write',
+'learn',
+'paper',
+'help',
+'man',
+'name',
+'play',
+'cousin',
+'spring',
+'where',
+'hearing',
+'brown',
+'black',
+'teacher',
+'how',
+'red',
+'hello',
+'right',
+'big',
+'want',
+'fish',
+'sit',
+'tired',
+'yellow',
+'live',
+'hungry',
+'table',
+'white',
+'who',
+'like',
+'grandmother',
+'work',
+'need',
+'lost',
+'you',
+'same',
+'milk',
+'sign',
+'girl',
+'brother',
+'hurt',
+'day',
+'father',
+'sick',
+'orange',
+'boy',
+'nurse',
+'bad',
+'fine',
+'english',
+'bathroom',
+'yes',
+'dance',
+'know',
+'school',
+'what',
+'mother',
+'green',
+'when',
+'nice',
+'blue',
+'student',
+'sorry',
+'night',
+'book',
+'here',
+'understand',
+'friend',
+'draw',
+'different',
+'water',
+'again',
+'france',
+'drink',
+'sad',
+'thank you',
+'finish',
+'beautiful',
+'sister',
+'read',
+'happy',
+'bird',
+'pencil',
+'grandfather',
+'woman',
+'good',
+'family',
+'eat',
+'deaf',
+'bored',
+'pink']
+
 
 
 """## 3.2 Detection Functions
@@ -562,6 +561,7 @@ def predict_detection_of_video(video_file_path):
     fps = cap.get(cv2.CAP_PROP_FPS)
 
     threshold_counter_no_hand = fps // 2
+    threshold_min_video_len = fps // 2
 
     video_times = []
     crop_video = []
@@ -641,7 +641,13 @@ def predict_detection_of_video(video_file_path):
                         if counter_no_hand > threshold_counter_no_hand:
                             # if end_time_temp is None:
                             if (frame_counter - start_time_temp) > fps:
-                                video_times.append((start_time_temp, frame_counter))
+                                # video_times.append((start_time_temp, frame_counter))
+                                end_time_temp = frame_counter - counter_no_hand
+                                if (end_time_temp - start_time_temp) < threshold_min_video_len:
+                                    end_time_temp = start_time_temp + threshold_min_video_len
+                                    if frame_counter < end_time_temp:
+                                        end_time_temp = frame_counter
+                                video_times.append((start_time_temp, end_time_temp))
                                 min_x, max_x, min_y, max_y = crop_videos_from_dataframe(
                                     video_positions, cap
                                 )
@@ -675,7 +681,13 @@ def predict_detection_of_video(video_file_path):
 
     if start_time_temp is not None:
         if (frame_counter - start_time_temp) > fps:
-            video_times.append((start_time_temp, frame_counter))
+            # video_times.append((start_time_temp, frame_counter))
+            end_time_temp = frame_counter - counter_no_hand
+            if (end_time_temp - start_time_temp) < threshold_min_video_len:
+                end_time_temp = start_time_temp + threshold_min_video_len
+                if frame_counter < end_time_temp:
+                    end_time_temp = frame_counter
+            video_times.append((start_time_temp, end_time_temp))
             min_x, max_x, min_y, max_y = crop_videos_from_dataframe(
                 video_positions, cap
             )
