@@ -15,21 +15,22 @@ The project contains an application that will:
 
 Optional: create a virtual environment with python and activate it
 
-python -m venv signlanguagevenv
+- python -m venv signlanguagevenv
 
-signlanguagevenv\Scripts\activate (windows) or signlanguagevenv\bin\activate (MacOS, Linux)
+- signlanguagevenv\Scripts\activate (windows) or signlanguagevenv\bin\activate (MacOS, Linux)
 
 Install the required libraries:
 
-'pip install -r requirements.txt'
+- pip install -r requirements.txt
 
-'pip install -q git+https://github.com/tensorflow/docs'
+- pip install -q git+https://github.com/tensorflow/docs
 
-'pip install pyyaml h5py'
+- pip install pyyaml h5py
 
 ## How to start and use the demo webapp
 
-1. 'python main.py' (starts the application and server)
+1. Navigate into 'deepsl/app'
+2. 'python main.py' (starts the application and server)
 3. Click the given link to open frontend webapp.
 4. Insert a video of sign language to the input field.
 5. The application now detects and recognizes the sign language using the provided API.
