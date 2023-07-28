@@ -3,10 +3,9 @@ import os
 import tempfile
 
 import uvicorn
+from detect_sign import predict_one_path, setup_prediction_model
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-
-from utils.detect_sign import predict_one_path, setup_prediction_model
 
 app = FastAPI()
 
