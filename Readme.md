@@ -29,10 +29,9 @@ Install the required libraries:
 
 ## How to start and use the demo webapp
 
-1. Navigate into 'deepsl/app'
-2. Run 'main.py' (starts the application and server)
-3. Open 'frontend.html' (preferably with Live Server extension)
-5. Click the given link to open frontend webapp.
+1. Navigate into 'deepsl/app'.
+2. Run 'main.py' (starts the application and server).
+3. Open 'frontend.html' to open frontend webapp (preferably with Live Server extension).
 6. Insert a video of sign language to the input field.
 7. The application now detects and recognizes the sign language using the provided API.
 8. The application converts the recognized sign language into text.
