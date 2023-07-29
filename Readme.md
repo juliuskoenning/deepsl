@@ -46,3 +46,7 @@ The application should:
 1. Take a given video input in the frontend and send it to the backend.
 2. Accurately detect and recognize and convert sign language gestures to text.
 4. Offer a secure and reliable API for integration with third-party applications.
+
+## Data Science Notebooks (DS)
+
+For running the Notebboks used to download the videos and to develop the models it is strongly recommended to use Google Colab.
