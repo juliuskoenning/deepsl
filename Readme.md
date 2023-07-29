@@ -50,5 +50,5 @@ The application should:
 ## Data Science Notebooks (DS)
 
 For running the Data Science Notebooks which were used to download the videos and to develop the models it is strongly recommended to use Google Colab. 
-- The trained EfficientNetB0 Modell can be found at: https://drive.google.com/drive/folders/1cjPciYMTOEaD2USHd_B94xNLUHVlSKsg?usp=sharing.
+- The trained EfficientNetB0 model can be found at: https://drive.google.com/drive/folders/1cjPciYMTOEaD2USHd_B94xNLUHVlSKsg?usp=sharing.
 - The dataset used to train the model can be found here: https://www.microsoft.com/en-us/research/project/ms-asl/
