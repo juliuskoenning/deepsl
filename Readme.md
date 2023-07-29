@@ -49,4 +49,4 @@ The application should:
 
 ## Data Science Notebooks (DS)
 
-For running the Notebboks used to download the videos and to develop the models it is strongly recommended to use Google Colab.
+For running the Data Science Notebooks which were used to download the videos and to develop the models it is strongly recommended to use Google Colab.
